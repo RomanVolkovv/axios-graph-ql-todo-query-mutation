@@ -11,7 +11,6 @@ function App() {
   const [todos, setTodos] = useState([]);
 
   console.log(todos);
-
   useEffect(() => {
     getTodos();
   }, []);
@@ -29,20 +28,19 @@ function App() {
     setNewTodoField('');
   }
 
+  function toggleTodoCheckbox(todoId) {}
+
   async function getTodos() {
     const res = await makeRequest(`query Todos {
 			todos{
-				data {
+				data{
 					id
 					title
 					completed
-					user {
-						name
-					}
 				}
 			}
 		}`);
-    const todos = await res.data;
+    const todos = await res.data.data.todos.data;
     setTodos(todos);
   }
 
@@ -50,7 +48,7 @@ function App() {
     <div className='app_wrapper'>
       <Search searchTodo={searchTodo} />
       <NewTaskField trackToNewTodoField={trackToNewTodoField} addTodo={addTodo} />
-      <TodoList todos={todos} />
+      <TodoList todos={todos} toggleTodoCheckbox={toggleTodoCheckbox} />
     </div>
   );
 }
